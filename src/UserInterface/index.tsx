@@ -4,7 +4,7 @@ import styles from './index.module.css';
 
 const UserInterface = () => {
   return (
-    <div>
+    <div className={styles.uiHud}>
       User Interface Example
       <PlayerInventory />
     </div>

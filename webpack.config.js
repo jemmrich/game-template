@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = function(_env, argv) {
   const isProduction = argv.mode === "production";
@@ -11,7 +12,7 @@ module.exports = function(_env, argv) {
 
   return {
     devtool: isDevelopment && "cheap-module-source-map",
-    entry: "./src/index.js",
+    entry: "./src/index.tsx",
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "assets/js/[name].[contenthash:8].js",
@@ -20,7 +21,7 @@ module.exports = function(_env, argv) {
     module: {
       rules: [
         {
-          test: /\.jsx?$/,
+          test: /\.(js|jsx|ts|tsx)$/,
           exclude: /node_modules/,
           use: {
             loader: "babel-loader",
@@ -62,7 +63,7 @@ module.exports = function(_env, argv) {
       ]
     },
     resolve: {
-      extensions: [".js", ".jsx"]
+      extensions: [".js", ".jsx", ".ts", ".tsx"]
     },
     plugins: [
       isProduction &&
@@ -78,6 +79,9 @@ module.exports = function(_env, argv) {
         "process.env.NODE_ENV": JSON.stringify(
           isProduction ? "production" : "development"
         )
+      }),
+        new ForkTsCheckerWebpackPlugin({
+        async: false
       })
     ].filter(Boolean),
     optimization: {
