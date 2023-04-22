@@ -1,0 +1,20 @@
+.inventoryContainer {
+  position: absolute;
+  bottom: calc(var(--app-margin));
+  right: calc(var(--app-margin) * -1);
+  left: 0;
+  height: 60px;
+}
+
+.inventory {
+  margin: 0 auto;
+  width: 320px;
+}
+
+.inventorySlot {
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
+  float: left;
+  margin: 5px;
+}
