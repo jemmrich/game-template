@@ -5,6 +5,7 @@ const webpack = require("webpack");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = function(_env, argv) {
   const isProduction = argv.mode === "production";
@@ -31,6 +32,10 @@ module.exports = function(_env, argv) {
               envName: isProduction ? "production" : "development"
             }
           }
+        },
+        {
+          test: /\.worker\.js$/,
+          loader: "worker-loader"
         },
         {
           test: /\.css$/,
@@ -82,7 +87,13 @@ module.exports = function(_env, argv) {
       }),
         new ForkTsCheckerWebpackPlugin({
         async: false
-      })
+      }),
+      // Uncomment if you want to user service workers
+      // new WorkboxPlugin.GenerateSW({
+      //   swDest: "service-worker.js",
+      //   clientsClaim: true,
+      //   skipWaiting: true
+      // }),
     ].filter(Boolean),
     optimization: {
       minimize: isProduction,
@@ -131,6 +142,7 @@ module.exports = function(_env, argv) {
       compress: true,
       historyApiFallback: true,
       hot: true,
+      port: 3000,
       // open: true,
       client: {
         overlay: true,
